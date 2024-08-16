@@ -1,4 +1,4 @@
-### ESVA Backend
+### e onboarding/KYC for users
 
 To run the project it is necessary to set up the necessary environment variables
 
