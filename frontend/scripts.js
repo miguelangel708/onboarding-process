@@ -6,25 +6,25 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
     const maxSize = 30 * 1024 * 1024; // Tamaño máximo permitido en bytes (30 MB)
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png']; // Tipos de archivo permitidos
 
+    const statusElement = document.getElementById('status');
+
     if (!fileFront || !fileBack) {
-        document.getElementById('status').textContent = 'Debe cargar ambas imágenes (frente y respaldo).';
-        document.getElementById('status').style.color = 'red';
+        statusElement.textContent = 'Debe cargar ambas imágenes (frente y respaldo).';
+        statusElement.style.color = 'red';
         return;
     }
 
     if (fileFront.size > maxSize || fileBack.size > maxSize) {
-        document.getElementById('status').textContent = 'El archivo es demasiado grande. El tamaño máximo permitido es 30 MB.';
-        document.getElementById('status').style.color = 'red';
+        statusElement.textContent = 'El archivo es demasiado grande. El tamaño máximo permitido es 30 MB.';
+        statusElement.style.color = 'red';
         return;
     }
 
     if (!allowedTypes.includes(fileFront.type) || !allowedTypes.includes(fileBack.type)) {
-        document.getElementById('status').textContent = 'Tipo de archivo no permitido. Solo se permiten JPEG, JPG y PNG.';
-        document.getElementById('status').style.color = 'red';
+        statusElement.textContent = 'Tipo de archivo no permitido. Solo se permiten JPEG, JPG y PNG.';
+        statusElement.style.color = 'red';
         return;
     }
-
-    
 
     const acceptTerms = document.getElementById('acceptTerms').checked;
 
@@ -35,19 +35,32 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
     formData.append('docType', document.getElementById('docType').value);
     formData.append('acceptTerms', acceptTerms); // Agrega el valor de la validación
 
+    // Mostrar pantalla de carga
+    statusElement.textContent = 'Uploading...';
+    statusElement.style.color = 'blue';
+
     fetch('http://127.0.0.1:5000/api/upload', {
         method: 'POST',
         body: formData
     })
-    .then(response => response.text())
+    .then(response => response.json()) // Cambiar a response.json() para analizar la respuesta JSON
     .then(data => {
-        document.getElementById('status').textContent = 'Documento subido con éxito.';
-        document.getElementById('status').style.color = 'green';
+        // Comprobar el estado devuelto por la API
+        if (data.status === 'successful') {
+            statusElement.textContent = 'Documento subido con éxito.';
+            statusElement.style.color = 'green';
+        } else if (data.status === 'pending') {
+            statusElement.textContent = 'Error al subir el documento.';
+            statusElement.style.color = 'red';
+        } else if (data.status === 'failure') {
+            statusElement.textContent = 'Error con las fotos. Verifique que las fotos subidas, se encuentren bien tomadas, para ello puede consultar la siguiente guia para capturar documentos: https://developer.truora.com/products/digital-identity/document_validation_picture_tips.html.';
+            statusElement.style.color = 'red';
+        }
         console.log('response:', data);
     })
     .catch(error => {
-        document.getElementById('status').textContent = 'Error al subir el documento.';
-        document.getElementById('status').style.color = 'red';
+        statusElement.textContent = 'Error al subir el documento.';
+        statusElement.style.color = 'red';
         console.error('Error:', error);
     });
 });
