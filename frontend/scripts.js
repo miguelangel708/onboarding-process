@@ -46,7 +46,7 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
     .then(response => response.json()) // Cambiar a response.json() para analizar la respuesta JSON
     .then(data => {
         // Comprobar el estado devuelto por la API
-        if (data.status === 'successful') {
+        if (data.status === 'success') {
             statusElement.textContent = 'Documento subido con éxito.';
             statusElement.style.color = 'green';
         } else if (data.status === 'pending') {

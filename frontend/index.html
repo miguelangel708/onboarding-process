@@ -7,28 +7,41 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Subir Documento</h1>
+    <div class="validation-container">
+        <div class="logo-container">
+            <img src="logo.svg" alt="Logo de la Empresa" class="logo">
+        </div>
+        <div class="validation-header">
+            <h1>Validation details</h1>
+            <span class="validation-status">Successful</span>
+        </div>
+        <p class="validation-text">This images contains filters to protect users identity</p>
+        
+        <div class="document-details">
+            <div>
+                <p>Interaction time with the user</p>
+                <p><strong>31 seconds</strong></p>
+            </div>
+            <div>
+                <p>Truora’s Processing Time</p>
+                <p><strong>7 seconds</strong></p>
+            </div>
+            <div>
+                <p>Date and time of validation</p>
+                <p><strong>Jan 5, 2023, 12:13 PM</strong></p>
+            </div>
+        </div>
         <form id="uploadForm" enctype="multipart/form-data">
             <label for="country">Seleccione el país:</label>
             <select id="country" name="country" required>
                 <option value="CO">Colombia</option>
-                <option value="MX">Mexico</option>
-                <option value="BR">Brasil</option>
-                <option value="PE">Peru</option>
-                <option value="VE">Venezuela</option>
-                <option value="PA">Panama</option>
-                <option value="CR">CR</option>
-                <option value="CL">CL</option>
-                <option value="ALL">ALL</option>
+                <!-- Other options -->
             </select>
 
             <label for="docType">Seleccione el tipo de documento:</label>
             <select id="docType" name="docType" required>
-                <option value="identity-card">tarjeta de identidad</option>
                 <option value="national-id">National Id</option>
-                <option value="passport">Pasaporte</option>
-                <option value="driver-license">Licencia de conducir</option>
+                <!-- Other options -->
             </select>
 
             <label for="fileFront">Cargar documento de frente:</label>
@@ -37,7 +50,7 @@
             <label for="fileBack">Cargar documento de respaldo:</label>
             <input type="file" id="fileBack" name="fileBack" required>
 
-            <div>
+            <div class="terms-container">
                 <input type="checkbox" id="acceptTerms" name="acceptTerms" required>
                 <label for="acceptTerms">Acepto los términos y condiciones</label>
             </div>
