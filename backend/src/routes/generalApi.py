@@ -20,10 +20,14 @@ def allowed_file(filename):
 def validateFiles(file_front, file_back):    
     #  Validación del tamaño del archivo en el backend
     if len(file_front.read()) > MAX_FILE_SIZE:
+        file_front.seek(0)
         return "El archivo frontal es demasiado grande. El tamaño máximo permitido es 5 MB.", 400
+    file_front.seek(0)
     if len(file_back.read()) > MAX_FILE_SIZE:
+        file_back.seek(0)
         return "El archivo frontal es demasiado grande. El tamaño máximo permitido es 5 MB.", 400
-    
+    file_back.seek(0)
+
     # Validación del tipo de archivo en el backend
     if not allowed_file(file_front.filename):
         return "Tipo de archivo frontal no permitido. Solo se permiten JPEG, JPG y PNG.", 400
@@ -60,14 +64,14 @@ def upload_file():
     
     # Guardar las imágenes en la carpeta 'updates'
     if file_front:
-        file_front.save(os.path.join(UPLOAD_FOLDER, file_front.filename))
-        print(f'Imagen de frente guardada en: {os.path.join(UPLOAD_FOLDER, file_front.filename)}')
+        file_front.save(os.path.join(UPLOAD_FOLDER, "front_doc.jpg"))
+        print(f'Imagen de frente guardada')
     
     if file_back:
-        file_back.save(os.path.join(UPLOAD_FOLDER, file_back.filename))
-        print(f'Imagen de respaldo guardada en: {os.path.join(UPLOAD_FOLDER, file_back.filename)}')
+        file_back.save(os.path.join(UPLOAD_FOLDER, "reverse_doc.jpg"))
+        print(f'Imagen de respaldo guardad')
     
     validate_actions = validateActions(DOCUMENT_VALIDATION, country, doc_type, accept_terms)
-    validate_actions.pipeline_document_validation()
+    final_validation_status = validate_actions.pipeline_document_validation()
     
-    return jsonify({'message': 'Datos recibidos y archivos guardados con éxito'}), 200
+    return jsonify({'status': final_validation_status}), 200
