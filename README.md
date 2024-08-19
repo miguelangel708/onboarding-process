@@ -1,6 +1,9 @@
-# Project Name
+# onboarding/KYC process for users
 
-A brief description of what your application does. Include the general purpose and main benefits or features.
+this project enables the end user: 
+1. upload a photo of your document from the front side.
+2. Upload a photo of the back side of their document.
+3. Visualize the final result of their validation.
 
 ## Technologies Used
 
