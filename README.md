@@ -108,5 +108,5 @@ This project is owned by Truora.
 
 If you have questions or need further assistance, you can contact me at:
 
-- **Email**: your_email@gmail.com
-- **GitHub**: [your_username](https://github.com/your_username)
+- **Email**: miguelmunoz.aristizabal@gmail.com@gmail.com
+- **GitHub**: [miguelangel708](https://github.com/miguelangel708)
