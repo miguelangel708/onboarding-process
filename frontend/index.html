@@ -1,20 +1,77 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subir Archivo</title>
+    <title>Onboarding process</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Subir Archivo</h1>
+    <div class="validation-container">
+        <h1>Onboarding process</h1>
+        <div class="validation-header">
+            <h1>Validation details</h1>
+            <span class="validation-status" id  ="validation-status">Status</span>
+        </div>        
+        <div class="document-details">
+            
+            <div>
+                <p>Truora’s Processing Time</p>
+                <p id="process_time"><strong>...</strong></p>
+            </div>
+            <div>
+                <p>Date and time of validation</p>
+                <p id="date_time"><strong>...</strong></p>
+            </div>
+        </div>
         <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" id="fileInput" name="file" required>
+            <label for="country">Select the country:</label>
+            <select id="country" name="country" required>
+                <option value="CO">Colombia (CO)</option>
+                <option value="CL">Chile (CL)</option>
+                <option value="MX">Mexico (MX)</option>
+                <option value="PE">Peru (PE)</option>
+                <option value="BR">Brasil (BR)</option>
+                <option value="CR">Costa Rica (CR)</option>
+                <option value="VE">Venezuela (VE)</option>
+                <option value="PA">Panama (PA)</option>
+                <option value="ALL">ALL</option>
+            </select>
+            
+
+            <label for="docType">Select document type:</label>
+            <select id="docType" name="docType" required>
+                <option value="national-id">National Id</option>
+                <option value="foreign-id">foreign Id</option>
+                <option value="passport">passport</option>
+                <option value="driver-license">driver license</option>
+                <option value="identity-card">identity card</option>
+            </select>
+
+            <label for="fileFront">Load front document:</label>
+            <input type="file" id="fileFront" name="fileFront" required>
+
+
+            <label for="fileBack">Upload reverse document:</label>
+            <input type="file" id="fileBack" name="fileBack" required>
+
+
+            <div class="terms-container">
+                <input type="checkbox" id="acceptTerms" name="acceptTerms" required>
+                <label for="acceptTerms">user authorization</label>
+            </div>
+
             <p id="status"></p>
-            <button type="submit">Subir</button>
+            <button type="submit">Upload</button>
         </form>
     </div>
+    <div class="validation-container visualizator">
+        <h1>Document visualization</h1>
+        <!-- Vista previa con imágenes por defecto -->
+        <img id="previewFront" src="images/frontalExample.png" alt="Vista previa de documento de frente" class="image-preview">
+        <img id="previewBack" src="images/reverseExample.png" alt="Vista previa de documento de respaldo" class="image-preview">
+    </div>
+    
     <script src="scripts.js"></script>
 </body>
 </html>

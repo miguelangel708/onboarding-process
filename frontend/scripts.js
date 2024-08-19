@@ -1,41 +1,128 @@
-
 document.getElementById('uploadForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Evita el envío tradicional del formulario
+    event.preventDefault(); // Avoid traditional form submission
 
-    const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0];
-    const maxSize = 30 * 1024 * 1024; // Tamaño máximo permitido en bytes (5 MB)
+    const fileFront = document.getElementById('fileFront').files[0];
+    const fileBack = document.getElementById('fileBack').files[0];
+    const maxSize = 30 * 1024 * 1024; // Tamaño máximo permitido en bytes (30 MB)
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png']; // Tipos de archivo permitidos
 
-    if (file.size > maxSize) {
-        document.getElementById('status').textContent = 'El archivo es demasiado grande. El tamaño máximo permitido es 5 MB.';
-        document.getElementById('status').style.color = 'red';
-        return; // Evita el envío si el archivo es demasiado grande
+    const statusElement = document.getElementById('status');
+    const validationStatusElement = document.getElementById('validation-status');
+    const process_time = document.getElementById('process_time')
+    const date_time = document.getElementById('date_time')
+    
+
+
+    if (!fileFront || !fileBack) {
+        statusElement.textContent = 'You must upload both images (front and back).';
+        statusElement.style.color = 'red';
+        return;
     }
 
-    // Validación del tipo de archivo
-    if (!allowedTypes.includes(file.type)) {
-        document.getElementById('status').textContent = 'Tipo de archivo no permitido. Solo se permiten JPEG, JPG y PNG.';
-        document.getElementById('status').style.color = 'red';
-        return; // Evita el envío si el tipo de archivo no es permitido
+    if (fileFront.size > maxSize || fileBack.size > maxSize) {
+        statusElement.textContent = 'The file is too large. The maximum size allowed is 30 MB.';
+        statusElement.style.color = 'red';
+        return;
     }
-    
+
+    if (!allowedTypes.includes(fileFront.type) || !allowedTypes.includes(fileBack.type)) {
+        statusElement.textContent = 'File type not allowed. Only JPEG, JPG and PNG are allowed.';
+        statusElement.style.color = 'red';
+        return;
+    }
+
+    const acceptTerms = document.getElementById('acceptTerms').checked;
+
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('fileFront', fileFront);
+    formData.append('fileBack', fileBack);
+    formData.append('country', document.getElementById('country').value);
+    formData.append('docType', document.getElementById('docType').value);
+    formData.append('acceptTerms', acceptTerms); // Add validation value
+
+    // Show loading screen
+    statusElement.textContent = 'Uploading...';
+    statusElement.style.color = 'blue';
 
     fetch('http://127.0.0.1:5000/api/upload', {
         method: 'POST',
         body: formData
     })
-    .then(response => response.text())
+    .then(response => response.json()) // Switch to response.json() to parse JSON response
     .then(data => {
-        document.getElementById('status').textContent = 'Archivo subido con éxito.';
-        document.getElementById('status').style.color = 'green';
-        console.log('response: ', data);
+        // Check the status returned by the API
+        if (data.status === 'success') {
+            
+            statusElement.textContent = 'Document successfully uploaded';
+            statusElement.style.color = 'green';
+            
+            validationStatusElement.textContent = 'Success'
+            validationStatusElement.style.backgroundColor = 'green'
+
+            process_time.textContent = data.processing_time + ' Seconds'
+            date_time.textContent = data.validation_date 
+
+        } else if (data.status === 'pending') {
+            
+            statusElement.textContent = 'Error uploading the document.';
+            statusElement.style.color = 'red';
+            
+            validationStatusElement.textContent = 'Denied'
+            validationStatusElement.style.backgroundColor = 'red'
+            
+            date_time.textContent = data.validation_date
+            process_time.textContent = 'time exceeded'
+
+
+        } else if (data.status === 'failure') {
+            
+            statusElement.textContent = 'Error with the photos. Verify that the uploaded photos are well taken, for this you can consult the following guide to capture documents: https://developer.truora.com/products/digital-identity/document_validation_picture_tips.html.';
+            statusElement.style.color = 'red';
+            
+            validationStatusElement.textContent = 'Denied'
+            validationStatusElement.style.backgroundColor = 'red' 
+            
+            date_time.textContent = data.validation_date
+            process_time.textContent = data.processing_time + ' Seconds'
+
+
+        }
+        console.log('response:', data);
     })
     .catch(error => {
-        document.getElementById('status').textContent = 'Error al subir el archivo.';
-        document.getElementById('status').style.color = 'red';
+        statusElement.textContent = 'Error uploading the document.';
+        statusElement.style.color = 'red';
         console.error('Error:', error);
     });
+});
+
+
+document.getElementById('fileFront').addEventListener('change', function(event) {
+    var previewFront = document.getElementById('previewFront');
+    var file = event.target.files[0];
+    
+    if (file) {
+        var reader = new FileReader();
+        
+        reader.onload = function(e) {
+            previewFront.src = e.target.result;
+        };
+        
+        reader.readAsDataURL(file);
+    }
+});
+
+document.getElementById('fileBack').addEventListener('change', function(event) {
+    var previewBack = document.getElementById('previewBack');
+    var file = event.target.files[0];
+    
+    if (file) {
+        var reader = new FileReader();
+        
+        reader.onload = function(e) {
+            previewBack.src = e.target.result;
+        };
+        
+        reader.readAsDataURL(file);
+    }
 });
