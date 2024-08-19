@@ -1,0 +1,8 @@
+# # flask api
+Flask==3.0.2
+Flask-Cors==4.0.0
+pyjwt
+requests
+
+# general 
+python-dotenv
