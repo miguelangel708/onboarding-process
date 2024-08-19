@@ -1,17 +1,17 @@
-# Usa la imagen oficial de Python como base
-FROM esva-base-backend
+# Uses the official Python image as a basis
+FROM python:3.11-slim
 
-# Copiar el directorio actual al contenedor en /usr/src/app
+# Copy current directory to container in /usr/src/app
 COPY . /workspaces
 
-# Establecer el directorio de trabajo
+# Establish the working directory
 WORKDIR /workspaces
 
-# Exponer el puerto en el que Flask se ejecutará dentro del contenedor
+# Expose the port on which Flask will run inside the container
 EXPOSE 5000
 
-# Instala las dependencias
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Ejecuta el script api.py al iniciar el contenedor
+# Run the api.py script at container startup
 CMD [ "python", "-m", "flask", "run", "--host=0.0.0.0" ]
