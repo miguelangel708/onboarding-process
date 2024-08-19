@@ -2,16 +2,17 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     height: 100vh;
     margin: 0;
 }
 
 .validation-container {
-    width: 500px;
+    width: 45%;
+    height: 100vh;
     background: white;
-    padding: 20px;
+    padding: 0px 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -28,7 +29,7 @@ body {
 }
 
 .validation-status {
-    background-color: #4CAF50;
+    background-color: #0800FF;
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -104,10 +105,23 @@ form {
 
 .logo-container {
     text-align: center;
-    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .logo {
     width: 150px; /* Ajusta el tamaño según sea necesario */
     height: auto;
+}
+
+/* .visualizator{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+} */
+
+.visualizator img{
+    height: 40vh;
+    width: auto;
+    padding: 1vh;
 }
